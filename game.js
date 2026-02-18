@@ -95,9 +95,17 @@ function updateCounters() {
     correctCounter.textContent = correctCount;
     incorrectCounter.textContent = incorrectCount;
 
+    const hintsText = document.getElementById('hintsText');
+    const remaining = 5 - incorrectCount;
+
     if (incorrectCount >= 5) {
         hintsButton.disabled = false;
         hintsButton.classList.add('active');
+        if (hintsText) hintsText.textContent = "¡Pistas disponibles!";
+    } else {
+        hintsButton.disabled = true;
+        hintsButton.classList.remove('active');
+        if (hintsText) hintsText.textContent = `${remaining} fallos para desbloquear`;
     }
 }
 
@@ -106,28 +114,45 @@ function renderList() {
 
     currentTop10.forEach((pokemon, index) => {
         const item = document.createElement('div');
-        item.className = 'list-item';
+        item.className = 'pokemon-card';
         if (guessedIndices.has(index)) {
             item.classList.add('revealed');
         }
 
-        const rank = document.createElement('span');
-        rank.className = 'rank';
-        rank.textContent = `#${index + 1}`;
+        // Rank Badge
+        const rank = document.createElement('div');
+        rank.className = 'rank-badge';
+        rank.textContent = index + 1;
+        item.appendChild(rank);
 
-        const info = document.createElement('div');
-        info.className = 'pokemon-info';
+        // Image Container
+        const imgContainer = document.createElement('div');
+        imgContainer.className = 'card-image-container';
 
-        const name = document.createElement('span');
+        if (guessedIndices.has(index)) {
+            const img = document.createElement('img');
+            img.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon.id}.png`;
+            img.className = 'pokemon-img';
+            img.alt = pokemon.name;
+            imgContainer.appendChild(img);
+        } else {
+            const unknown = document.createElement('div');
+            unknown.className = 'unknown-mark';
+            unknown.textContent = '?';
+            imgContainer.appendChild(unknown);
+        }
+        item.appendChild(imgContainer);
+
+        // Name
+        const name = document.createElement('div');
         name.className = 'pokemon-name';
         name.textContent = guessedIndices.has(index) ? pokemon.name : '???';
+        item.appendChild(name);
 
-        info.appendChild(name);
-
-        // Add type icons if hints are enabled and not guessed
+        // Hints (Type Icons)
         if (hintsUsed && !guessedIndices.has(index)) {
             const typeContainer = document.createElement('div');
-            typeContainer.className = 'type-icons';
+            typeContainer.className = 'card-hints';
             pokemon.types.forEach(type => {
                 const img = document.createElement('img');
                 img.src = `https://raw.githubusercontent.com/duiker101/pokemon-type-svg-icons/master/icons/${type}.svg`;
@@ -135,17 +160,14 @@ function renderList() {
                 img.className = `type-icon ${type}`;
                 typeContainer.appendChild(img);
             });
-            info.appendChild(typeContainer);
+            item.appendChild(typeContainer);
         }
 
-        const stat = document.createElement('span');
+        // Stat
+        const stat = document.createElement('div');
         stat.className = 'stat-value';
         stat.textContent = getStatValue(pokemon, currentCategory);
-
-        info.appendChild(stat);
-
-        item.appendChild(rank);
-        item.appendChild(info);
+        item.appendChild(stat);
 
         topList.appendChild(item);
     });
@@ -210,7 +232,8 @@ function showHints() {
         hintsUsed = true;
         renderList();
         hintsButton.disabled = true; // Disable after using
-        hintsButton.textContent = "Pistas activadas";
+        const hintsText = document.getElementById('hintsText');
+        if (hintsText) hintsText.textContent = "Pistas activadas";
         hintsButton.classList.remove('active');
     }
 }
