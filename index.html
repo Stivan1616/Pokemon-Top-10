@@ -9,6 +9,22 @@
 </head>
 
 <body>
+    <button id="hintsButton" class="hints-button" disabled>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
+            <path
+                d="M12 2C7.58 2 4 5.58 4 10c0 2.61 1.25 4.93 3.19 6.42 1.34 1.03 2.18 2.64 2.18 4.38v1.5c0 .66.54 1.2 1.2 1.2h2.85c.66 0 1.2-.54 1.2-1.2v-1.5c0-1.74.84-3.35 2.18-4.38C18.75 14.93 20 12.61 20 10c0-4.42-3.58-8-8-8zM9 21v1c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9z" />
+        </svg>
+        <span id="hintsText">5 fallos para desbloquear</span>
+    </button>
+
+    <button id="silhouetteButton" class="hints-button silhouette-button" disabled>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
+            <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z" />
+        </svg>
+        <span id="silhouetteText">15 fallos para siluetas</span>
+    </button>
+
     <div class="container">
         <h1>Pokemon Top 10</h1>
 
@@ -17,7 +33,7 @@
             <div class="counter error">Errores: <span id="incorrectCount">0</span></div>
         </div>
 
-        <button id="hintsButton" class="hints-button" disabled>Mostrar Pistas</button>
+
 
         <div class="controls">
             <select id="categorySelect" class="category-select">

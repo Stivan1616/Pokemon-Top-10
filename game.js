@@ -14,6 +14,7 @@ const topList = document.getElementById('topList');
 const correctCounter = document.getElementById('correctCount');
 const incorrectCounter = document.getElementById('incorrectCount');
 const hintsButton = document.getElementById('hintsButton');
+const silhouetteButton = document.getElementById('silhouetteButton');
 
 // Map internal keys to display names
 const categoryNames = {
@@ -42,6 +43,7 @@ let guessedIndices = new Set();
 let correctCount = 0;
 let incorrectCount = 0;
 let hintsUsed = false;
+let silhouetteUsed = false;
 
 // Initialize Categories
 function init() {
@@ -56,6 +58,7 @@ function init() {
     guessInput.addEventListener('keydown', handleInput);
     guessInput.addEventListener('input', handleAutocomplete);
     hintsButton.addEventListener('click', showHints);
+    silhouetteButton.addEventListener('click', showSilhouettes);
 
     // Close suggestions when clicking outside
     document.addEventListener('click', (e) => {
@@ -79,6 +82,7 @@ function handleCategoryChange(e) {
     correctCount = 0;
     incorrectCount = 0;
     hintsUsed = false;
+    silhouetteUsed = false;
 
     // Reset UI
     guessInput.value = '';
@@ -87,17 +91,37 @@ function handleCategoryChange(e) {
     updateCounters();
     hintsButton.disabled = true;
     hintsButton.classList.remove('active');
+    silhouetteButton.disabled = true;
+    silhouetteButton.classList.remove('active');
     renderList();
     guessInput.focus();
 }
 
 function updateCounters() {
-    correctCounter.textContent = correctCount;
-    incorrectCounter.textContent = incorrectCount;
+    const hintsText = document.getElementById('hintsText');
+    const remainingHints = 5 - incorrectCount;
 
     if (incorrectCount >= 5) {
         hintsButton.disabled = false;
         hintsButton.classList.add('active');
+        if (hintsText) hintsText.textContent = "¡Pistas disponibles!";
+    } else {
+        hintsButton.disabled = true;
+        hintsButton.classList.remove('active');
+        if (hintsText) hintsText.textContent = `${remainingHints} fallos para desbloquear`;
+    }
+
+    const silhouetteText = document.getElementById('silhouetteText');
+    const remainingSilhouettes = 15 - incorrectCount;
+
+    if (incorrectCount >= 15) {
+        silhouetteButton.disabled = false;
+        silhouetteButton.classList.add('active');
+        if (silhouetteText) silhouetteText.textContent = "¡Siluetas disponibles!";
+    } else {
+        silhouetteButton.disabled = true;
+        silhouetteButton.classList.remove('active');
+        if (silhouetteText) silhouetteText.textContent = `${remainingSilhouettes} fallos para siluetas`;
     }
 }
 
@@ -126,6 +150,12 @@ function renderList() {
             img.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon.id}.png`;
             img.className = 'pokemon-img';
             img.alt = pokemon.name;
+            imgContainer.appendChild(img);
+        } else if (silhouetteUsed) {
+            const img = document.createElement('img');
+            img.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon.id}.png`;
+            img.className = 'pokemon-img silhouette';
+            img.alt = 'Silhouette';
             imgContainer.appendChild(img);
         } else {
             const unknown = document.createElement('div');
@@ -224,8 +254,20 @@ function showHints() {
         hintsUsed = true;
         renderList();
         hintsButton.disabled = true; // Disable after using
-        hintsButton.textContent = "Pistas activadas";
+        const hintsText = document.getElementById('hintsText');
+        if (hintsText) hintsText.textContent = "Pistas activadas";
         hintsButton.classList.remove('active');
+    }
+}
+
+function showSilhouettes() {
+    if (incorrectCount >= 15) {
+        silhouetteUsed = true;
+        renderList();
+        silhouetteButton.disabled = true;
+        const silhouetteText = document.getElementById('silhouetteText');
+        if (silhouetteText) silhouetteText.textContent = "Siluetas activadas";
+        silhouetteButton.classList.remove('active');
     }
 }
 

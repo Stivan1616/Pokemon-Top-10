@@ -56,31 +56,85 @@ body {
 }
 
 .hints-button {
-  width: 100%;
-  padding: 0.8rem;
-  margin-bottom: 1.5rem;
-  background: linear-gradient(135deg, #e17055, #d63031);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-weight: bold;
-  font-size: 1rem;
-  cursor: pointer;
-  opacity: 0.5;
-  pointer-events: none;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--text-color);
+  width: auto;
+  padding: 10px 20px;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: not-allowed;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  font-weight: bold;
 }
 
+.hints-button svg {
+  fill: var(--text-color);
+  opacity: 0.5;
+  transition: all 0.3s ease;
+}
+
+.hints-button span {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+/* Unlocked State */
 .hints-button.active {
-  opacity: 1;
+  background: var(--surface-color);
+  border-color: #f7d02c;
+  cursor: pointer;
   pointer-events: auto;
+  box-shadow: 0 0 15px rgba(247, 208, 44, 0.5);
+}
+
+.hints-button.active svg {
+  fill: #f7d02c;
+  opacity: 1;
+  filter: drop-shadow(0 0 5px #f7d02c);
+}
+
+.hints-button.active span {
+  color: #f7d02c;
+  opacity: 1;
+}
+
+.hints-button:hover {
   transform: translateY(-2px);
 }
 
 .hints-button:active {
   transform: translateY(1px);
 }
+
+.silhouette-button {
+  top: 80px;
+  /* Position below the hints button */
+}
+
+/* Specific color for silhouette button when active */
+.silhouette-button.active {
+  border-color: #a29bfe;
+  box-shadow: 0 0 15px rgba(162, 155, 254, 0.5);
+}
+
+.silhouette-button.active svg {
+  fill: #a29bfe;
+  filter: drop-shadow(0 0 5px #a29bfe);
+}
+
+.silhouette-button.active span {
+  color: #a29bfe;
+}
+
 
 .type-icons {
   display: flex;
@@ -330,6 +384,12 @@ input[type="text"]:focus {
   max-height: 100%;
   filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
   animation: fadeIn 0.5s ease;
+  transition: filter 0.3s ease, opacity 0.3s ease;
+}
+
+.pokemon-img.silhouette {
+  filter: brightness(0) grayscale(100%);
+  opacity: 0.8;
 }
 
 .unknown-mark {
