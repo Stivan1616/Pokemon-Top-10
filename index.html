@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokemon Top 10 Challenge</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Pokemon Top 10</h1>
+
+        <div class="counters">
+            <div class="counter success">Correctas: <span id="correctCount">0</span></div>
+            <div class="counter error">Errores: <span id="incorrectCount">0</span></div>
+        </div>
+
+        <button id="hintsButton" class="hints-button" disabled>Mostrar Pistas</button>
+
+        <div class="controls">
+            <select id="categorySelect" class="category-select">
+                <option value="" disabled selected>Selecciona una categoría</option>
+                <!-- Categories will be populated by JS -->
+            </select>
+
+            <div class="input-group">
+                <input type="text" id="guessInput" placeholder="Escribe un nombre de Pokemon..." autocomplete="off">
+                <div id="suggestions" class="suggestions-list"></div>
+                <div id="feedback" class="feedback"></div>
+            </div>
+        </div>
+
+        <div id="topList" class="top-list">
+            <!-- List items will be generated here -->
+        </div>
+    </div>
+
+    <!-- Load data first -->
+    <script src="pokemon_db.js"></script>
+    <script src="pokemon_tops.js"></script>
+    <!-- Game logic -->
+    <script src="game.js"></script>
+</body>
+
+</html>
